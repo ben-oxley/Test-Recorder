@@ -113,10 +113,13 @@ public class SplashPresenter implements Initializable {
 
         @Override
         public Event dispatchEvent(Event event, EventDispatchChain tail) {
-            if (event instanceof MouseEvent){
+            if (event instanceof MouseEvent) {
                 MouseEvent mouseEvent = (MouseEvent) event;
-                Node intersectedNode = mouseEvent.getPickResult().getIntersectedNode();
-                System.out.println(mouseEvent.getSceneX()+","+mouseEvent.getSceneY()+","+intersectedNode!=null?intersectedNode.toString():"null");
+                if (!mouseEvent.getEventType().equals(MouseEvent.MOUSE_MOVED)) {
+                    Node intersectedNode = mouseEvent.getPickResult().getIntersectedNode();
+                    System.out.println(mouseEvent.getSceneX() + "," + mouseEvent.getSceneY() + "," + intersectedNode != null ? intersectedNode.toString() : "null");
+
+                }
             }
             return super.dispatchEvent(event, tail);
         }

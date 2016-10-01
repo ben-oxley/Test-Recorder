@@ -14,5 +14,6 @@ repositories {
 
 dependencies {
     compile group: 'com.airhacks', name: 'afterburner.fx', version: '1.6.0'
+    compile group: 'org.testfx', name: 'testfx-core', version: '4.0.1-alpha'
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
