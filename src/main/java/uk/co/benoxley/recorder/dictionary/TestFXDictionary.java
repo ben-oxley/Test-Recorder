@@ -58,6 +58,7 @@ public class TestFXDictionary implements Dictionary {
         }
         sb.append(getNodeDescriptor(getIntersectedNode(event)));
         sb.append(");");
+        return sb.toString();
     }
 
     public String translate(DragEvent event){
@@ -102,5 +103,6 @@ public class TestFXDictionary implements Dictionary {
 
 
         }
+        return "";
     }
 }
