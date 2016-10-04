@@ -1,23 +1,21 @@
 package uk.co.benoxley.recorder.domain;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementRef;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlList;
+import javax.xml.bind.annotation.*;
 import java.util.List;
 
 /**
  * Created by ben on 04/10/2016.
  */
+@XmlRootElement
 public class TestClass {
-    @XmlElement
+    @XmlAttribute(name="class")
     String className;
-    @XmlElement
+    @XmlElement(name="setup")
     TestMethod setup;
-    @XmlList
+    @XmlElement(name="tests")
     List<TestMethod> tests;
     @XmlElementRef
     UIMap map;
-    @XmlElement
+    @XmlElement(name="teardown")
     TestMethod teardown;
 }
