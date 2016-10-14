@@ -7,6 +7,7 @@ import javafx.scene.control.Pagination;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import org.testfx.api.FxRobot;
 
 import java.util.Iterator;
@@ -56,7 +57,9 @@ public class TestFXDictionary implements Dictionary {
     public Optional<String> translate(MouseEvent event){
         boolean valid = true;
         StringBuilder sb = new StringBuilder();
-        if (MouseEvent.MOUSE_ENTERED.equals(event.getEventType())){
+        if (MouseEvent.MOUSE_ENTERED_TARGET.equals(event.getEventType())){
+            sb.append("moveTo(");
+        } else if (MouseEvent.MOUSE_ENTERED.equals(event.getEventType())){
             sb.append("moveTo(");
         }
         else if (!event.isDragDetect()) {
@@ -100,28 +103,35 @@ public class TestFXDictionary implements Dictionary {
     }
 
     public Optional<String> getNodeDescriptor(Node node){
-        if (node.getId()!=""&&node.getId()!=null){
-            return Optional.of("#"+node.getId());
-        } else if (node instanceof Labeled){
-            Labeled labeled = (Labeled) node;
-            String text = labeled.getText();
-            if (text != "" && text!=null){
-                return Optional.of(text);
-            }
-        } else if (!node.getStyleClass().isEmpty()){
-            FxRobot robot = new FxRobot();
-            Iterator<String> iterator = node.getStyleClass().iterator();
-            while (iterator.hasNext()){
-                String next = iterator.next();
-                Set<Node> nodes = robot.from(node.getScene().getRoot()).lookup("." + next).queryAll();
-                if (nodes.size()==1){
-                    //We've found a unique css identifier for the
-                    return Optional.of("."+next);
+        if (node!=null) {
+            if (node.getId() != "" && node.getId() != null) {
+                return Optional.of("\"#" + node.getId()+"\"");
+            } else if (node instanceof Labeled) {
+                Labeled labeled = (Labeled) node;
+                String text = labeled.getText();
+                if (text != "" && text != null) {
+                    return Optional.of("\""+text+"\"");
                 }
+            } else if (Text.class.isAssignableFrom(node.getClass())) {
+                Text labeled = (Text) node;
+                String text = labeled.getText();
+                if (text != "" && text != null) {
+                    return Optional.of("\""+text+"\"");
+                }
+            } else if (!node.getStyleClass().isEmpty()) {
+                FxRobot robot = new FxRobot();
+                Iterator<String> iterator = node.getStyleClass().iterator();
+                while (iterator.hasNext()) {
+                    String next = iterator.next();
+                    Set<Node> nodes = robot.from(node.getScene().getRoot()).lookup("." + next).queryAll();
+                    if (nodes.size() == 1) {
+                        //We've found a unique css identifier for the
+                        return Optional.of("\"." + next+"\"");
+                    }
+                }
+
+
             }
-
-
-
         }
         return Optional.empty();
     }
