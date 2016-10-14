@@ -21,8 +21,7 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TextField GridPane.columnIndex="1" />
-      <Button mnemonicParsing="false" onAction="#loadJar" prefWidth="10.0" text="Browse" GridPane.columnIndex="2" />
+      <Button mnemonicParsing="false" onAction="#loadJar" prefWidth="300.0" text="Browse" GridPane.columnIndex="1" GridPane.columnSpan="2" />
       <ComboBox fx:id="classesCmb" prefWidth="300.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
       <Button onAction="#run" mnemonicParsing="false" text="Start" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Jars to load" GridPane.halignment="CENTER" />

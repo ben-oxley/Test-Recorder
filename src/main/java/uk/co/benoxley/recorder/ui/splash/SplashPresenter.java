@@ -52,12 +52,12 @@ public class SplashPresenter implements Initializable {
     }
 
     @FXML
-    public void loadJar(ActionEvent action){
+    public void loadJar(ActionEvent action) {
         FileChooser chooser = new FileChooser();
-        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Java archives","*.jar"));
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Java archives", "*.jar"));
 
         File file = chooser.showOpenDialog(stage);
-        if (file !=null) {
+        if (file != null) {
             ObservableList<Class> applications = FXCollections.observableArrayList();
             Enumeration<JarEntry> e;
             URLClassLoader cl;
@@ -80,11 +80,10 @@ public class SplashPresenter implements Initializable {
                     }
 
 
-
                 }
                 classesCmb.setItems(applications);
-                classesCmb.setValue(applications.isEmpty()?null:applications.iterator().next());
-                LOGGER.info("Loaded "+applications.size()+" classes.");
+                classesCmb.setValue(applications.isEmpty() ? null : applications.iterator().next());
+                LOGGER.info("Loaded " + applications.size() + " classes.");
             } catch (IOException | ClassNotFoundException e1) {
                 e1.printStackTrace();
             }
@@ -95,10 +94,10 @@ public class SplashPresenter implements Initializable {
 
     @FXML
     public void run(ActionEvent action) throws Exception {
-        if (classesCmb.getSelectionModel().getSelectedItem()!=null){
+        if (classesCmb.getSelectionModel().getSelectedItem() != null) {
 
             Class selectedItem = classesCmb.getSelectionModel().getSelectedItem();
-            Application o = (Application)selectedItem.newInstance();
+            Application o = (Application) selectedItem.newInstance();
             Stage stage = new Stage();
             stage.setTitle("My New Stage Title");
             o.start(stage);
@@ -107,7 +106,7 @@ public class SplashPresenter implements Initializable {
         }
     }
 
-    class EventDispatcherListener extends NodeEventDispatcher{
+    class EventDispatcherListener extends NodeEventDispatcher {
 
         public EventDispatcherListener(Object eventSource) {
             super(eventSource);
@@ -126,7 +125,16 @@ public class SplashPresenter implements Initializable {
                 MouseEvent mouseEvent = (MouseEvent) event;
                 if (!mouseEvent.getEventType().equals(MouseEvent.MOUSE_MOVED)) {
                     Node intersectedNode = mouseEvent.getPickResult().getIntersectedNode();
-                    LOGGER.info(mouseEvent.getSceneX() + "," + mouseEvent.getSceneY() + "," + intersectedNode != null ? intersectedNode.toString() : "null");
+                    try {
+                        LOGGER.fine(
+                                mouseEvent.getSceneX() + "," +
+                                mouseEvent.getSceneY() + "," +
+                                intersectedNode != null ? intersectedNode.toString() : "null"
+                        );
+                    } catch (NullPointerException e) {
+                        LOGGER.fine("Event registered outside of scene");
+                    }
+
                 }
             }
             return super.dispatchEvent(event, tail);

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<BorderPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uk.co.benoxley.recorder.ui.main.MainPresenter">
+   <left>
+      <TitledPane fx:id="filePane" animated="false" collapsible="false" text="Files">
+         <content>
+            <TreeView fx:id="testFiles" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+         </content>
+      </TitledPane>
+   </left>
+   <top>
+      <TabPane>
+         <tabs>
+            <Tab closable="false" text="File">
+               <content>
+                  <MenuBar BorderPane.alignment="CENTER">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="File">
+                        <items>
+                              <MenuItem mnemonicParsing="false" text="New Project" />
+                              <MenuItem mnemonicParsing="false" text="Load Project" />
+                              <MenuItem mnemonicParsing="false" text="Save Project" />
+                          <MenuItem mnemonicParsing="false" text="Exit" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Help">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="About" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+               </content>
+            </Tab>
+            <Tab closable="false" text="Edit">
+               <content>
+                  <HBox alignment="CENTER_LEFT" maxHeight="29.0" minHeight="29.0" prefHeight="29.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Button fx:id="load" onAction="#load" mnemonicParsing="false" text="Load Application" />
+                        <ToggleButton fx:id="record" mnemonicParsing="false" text="Record Actions">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </ToggleButton>
+                     </children>
+                  </HBox>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </top>
+   <bottom>
+      <TitledPane fx:id="codePane" animated="false" collapsible="false" text="Generated Code">
+         <content>
+            <TextArea BorderPane.alignment="CENTER" />
+         </content>
+      </TitledPane>
+   </bottom>
+   <center>
+      <AnchorPane>
+         <children>
+            <TitledPane fx:id="testTitlePane" animated="false" collapsible="false" text="Test Steps" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER" />
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
