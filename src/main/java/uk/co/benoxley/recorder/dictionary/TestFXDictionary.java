@@ -3,12 +3,14 @@ package uk.co.benoxley.recorder.dictionary;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.control.Labeled;
+import javafx.scene.control.Pagination;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import org.testfx.api.FxRobot;
 
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -43,22 +45,40 @@ import java.util.Set;
 public class TestFXDictionary implements Dictionary {
 
     @Override
-    public String translate(Event event) {
-        return null;
+    public Optional<String> translate(Event event) {
+        Optional<String> result = Optional.empty();
+        if (MouseEvent.ANY.equals(event.getEventType()!=null?event.getEventType().getSuperType():null)){
+            result = translate((MouseEvent) event);
+        }
+        return result;
     }
 
-    public String translate(MouseEvent event){
+    public Optional<String> translate(MouseEvent event){
+        boolean valid = true;
         StringBuilder sb = new StringBuilder();
-        if (!event.isDragDetect()) {
+        if (MouseEvent.MOUSE_ENTERED.equals(event.getEventType())){
+            sb.append("moveTo(");
+        }
+        else if (!event.isDragDetect()) {
             if (event.isPrimaryButtonDown()) {
                 sb.append("clickOn(");
             } else if (event.isSecondaryButtonDown()) {
                 sb.append("rightClickOn(");
+            } else {
+                valid = false;
             }
+        } else {
+            valid = false;
         }
-        sb.append(getNodeDescriptor(getIntersectedNode(event)));
+        Optional<String> nodeDescriptor = getNodeDescriptor(getIntersectedNode(event));
+        nodeDescriptor.ifPresent(sb::append);
+        valid = valid && nodeDescriptor.isPresent();
         sb.append(");");
-        return sb.toString();
+        Optional<String> result = Optional.empty();
+        if (valid){
+            result = Optional.of(sb.toString());
+        }
+        return result;
     }
 
     public String translate(DragEvent event){
@@ -79,14 +99,14 @@ public class TestFXDictionary implements Dictionary {
         return event.getPickResult().getIntersectedNode();
     }
 
-    public String getNodeDescriptor(Node node){
-        if (node.getId()!=""){
-            return "#"+node.getId();
+    public Optional<String> getNodeDescriptor(Node node){
+        if (node.getId()!=""&&node.getId()!=null){
+            return Optional.of("#"+node.getId());
         } else if (node instanceof Labeled){
             Labeled labeled = (Labeled) node;
             String text = labeled.getText();
-            if (text != ""){
-                return text;
+            if (text != "" && text!=null){
+                return Optional.of(text);
             }
         } else if (!node.getStyleClass().isEmpty()){
             FxRobot robot = new FxRobot();
@@ -96,13 +116,13 @@ public class TestFXDictionary implements Dictionary {
                 Set<Node> nodes = robot.from(node.getScene().getRoot()).lookup("." + next).queryAll();
                 if (nodes.size()==1){
                     //We've found a unique css identifier for the
-                    return "."+next;
+                    return Optional.of("."+next);
                 }
             }
 
 
 
         }
-        return "";
+        return Optional.empty();
     }
 }
